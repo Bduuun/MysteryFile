@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Таємничий файл</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: white;
+            color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            flex-direction: column;
+            background-size: cover;
+            background-position: center;
+        }
+
+        #heart-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+        }
+
+        .question {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .input-box {
+            font-size: 24px;
+            padding: 10px;
+            margin-top: 20px;
+            border: 2px solid black;
+            border-radius: 5px;
+        }
+
+        .message {
+            font-size: 36px;  /* Великий шрифт */
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            text-transform: uppercase; /* Перетворення на великі літери */
+            color: white;
+            position: absolute;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .red-text {
+            color: red; /* Червоний колір для другого етапу */
+        }
+    </style>
+</head>
+<body>
+    <div class="question" id="question">Хто хоче отримати доступ до цього серця?</div>
+    <input type="text" class="input-box" id="user-input" placeholder="Введіть відповідь...">
+    <div class="message" id="message"></div>
+    <img src="heart.jpg" id="heart-image" />
+    
+    <script>
+        let step = 1;
+        let userInput = '';
+        const questionEl = document.getElementById('question');
+        const userInputEl = document.getElementById('user-input');
+        const messageEl = document.getElementById('message');
+        const heartImage = document.getElementById('heart-image');
+        const body = document.body;
+
+        userInputEl.addEventListener('input', function () {
+            userInput = userInputEl.value;
+        });
+
+        userInputEl.addEventListener('keydown', function (event) {
+            if (event.key === 'Enter') {
+                if (step === 1 && userInput.toLowerCase() === 'марина') {
+                    step = 2;
+                    nextQuestion();
+                } else if (step === 2 && userInput.toLowerCase() === 'так') {
+                    step = 3;
+                    nextQuestion();
+                } else if (step === 3 && userInput.toLowerCase() === 'так') {
+                    step = 4;
+                    nextQuestion();
+                } else {
+                    userInput = '';
+                    userInputEl.value = '';
+                }
+            }
+        });
+
+        function nextQuestion() {
+            switch (step) {
+                case 2:
+                    questionEl.textContent = 'Чи хочеш, щоб це серце належало тобі?';
+                    questionEl.classList.add('red-text');  // Заміна кольору тексту на червоний
+                    body.style.backgroundImage = 'url("magnolia.jpeg")';  // Фон для другого етапу
+                    break;
+                case 3:
+                    questionEl.textContent = 'Чи даси своє серце навзаєм?';
+                    questionEl.classList.remove('red-text');  // Видалення червоного кольору тексту
+                    body.style.backgroundImage = 'url("sakura.jpg")';  // Фон для третього етапу
+                    break;
+                case 4:
+                    questionEl.style.display = 'none';
+                    userInputEl.style.display = 'none';
+                    messageEl.textContent = 'Я ДУЖЕ ЩАСЛИВИЙ, ЩО САМЕ ТИ ЗАБРАЛА МОЄ СЕРЦЕ! КОХАЮ ТЕБЕ І З НЕТЕРПІННЯМ ЧЕКАЮ НАШОЇ ЗУСТРІЧІ<3!';
+                    heartImage.style.display = 'block';
+                    body.style.backgroundImage = 'url("glicinia.jpg")';  // Фон для четвертого етапу
+                    break;
+                default:
+                    body.style.backgroundImage = 'url("tunnel.jpg")';  // Фон для першого етапу
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>
